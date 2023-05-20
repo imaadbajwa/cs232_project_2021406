@@ -1,0 +1,56 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <title>Authentication</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a class="button" href="/">Home</a></li>
+            {% if user.is_authenticated %}
+                <li>
+                    {% if not request.path == '/add_details' %}
+                        <a class="button" href="/add_details">Add/Update Details</a>
+                    {% endif %}
+                </li>
+                <li>
+                    <a class="button" href="/signout">Sign Out</a>
+                </li>
+            {% else %}
+                <li>
+                    <button type="submit"><a href="/signup">Sign Up</a></button>
+                    <button type="submit"><a href="/signin">Sign In</a></button>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <strong>Message:</strong> {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+
+    <h1>University Registration Forum</h1>
+    {% if user.is_authenticated %}
+        <h3>Hello {{ fname }}</h3>
+        <h4>You're successfully logged in.</h4>
+        {% if not request.path == '/add_details' %}
+            <button type="button"><a href="/add_details">Add/Update Details</a></button>
+        {% endif %}
+        <button type="submit"><a href="/signout">Sign Out</a></button>
+    {% else %}
+        <button type="submit"><a href="/signup">Sign Up</a></button>
+        <button type="submit"><a href="/signin">Sign In</a></button>
+    {% endif %}
+</body>
+</html>
